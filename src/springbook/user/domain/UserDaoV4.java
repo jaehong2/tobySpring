@@ -3,8 +3,6 @@ import java.sql.*;
 
 public abstract class UserDaoV4 {
 
-
-
     public void add(User user) throws ClassNotFoundException, SQLException {
         Connection c = getConnection();
 
