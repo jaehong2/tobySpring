@@ -17,6 +17,9 @@ public abstract class UserDaoV4 {
 
         ps.close();
         c.close();
+
+
+        System.out.println("");
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
