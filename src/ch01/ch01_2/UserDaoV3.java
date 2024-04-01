@@ -1,4 +1,4 @@
-package springbook.user.domain;
+package ch01.ch01_2;
 import java.sql.*;
 
 public class UserDaoV3 {
@@ -6,7 +6,7 @@ public class UserDaoV3 {
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
         UserDaoV3 dao = new UserDaoV3();
         User user = new User();
-        user.setId("whiteship1");
+        user.setId("whiteship2");
         user.setName("백기선");
         user.setPassword("married");
 

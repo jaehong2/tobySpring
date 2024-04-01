@@ -1,33 +1,44 @@
-package springbook.user.domain;
+package ch01.ch01_3;
 
-import java.sql.*;
+import ch01.ch01_2.User;
+import ch01.ch01_2.UserDaoV3;
 
-public class UserDaoV1 {
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class UserDaoV5 {
+    private SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDaoV5() {
+        simpleConnectionMaker = new SimpleConnectionMaker();
+    }
 
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
-        UserDaoV1 dao = new UserDaoV1();
-
+        UserDaoV5 dao = new UserDaoV5();
         User user = new User();
-        user.setId("whiteShip");
+        user.setId("whiteship3");
         user.setName("백기선");
         user.setPassword("married");
 
         dao.add(user);
-
-        System.out.println(user.getId() + " 등록 성공");
+        System.out.println(user.getId() + " success");
 
         User user2 = dao.get(user.getId());
         System.out.println(user2.getName());
-
+        System.out.println(user2.getPassword());
+        System.out.println(user2.getName() + " success");
     }
 
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection c = DriverManager.getConnection(
-                "jdbc:mysql://localhost/toby", "root", "root");
+        Connection c = simpleConnectionMaker.makeConnection();
+
         PreparedStatement ps = c.prepareStatement(
-                "insert into users(id, name, password) values(?,?,?)");
+                "insert into users(id, name, password) values (?,?,?)"
+        );
         ps.setString(1, user.getId());
         ps.setString(2, user.getName());
         ps.setString(3, user.getPassword());
@@ -36,20 +47,19 @@ public class UserDaoV1 {
 
         ps.close();
         c.close();
-
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection c = DriverManager.getConnection(
-                "jdbc:mysql://localhost/toby", "root", "root");
+        Connection c = simpleConnectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
-                "select * from users where id =?");
+                "select * from users where id = ?"
+        );
         ps.setString(1, id);
 
         ResultSet rs = ps.executeQuery();
         rs.next();
+
         User user = new User();
         user.setId(rs.getString("id"));
         user.setName(rs.getString("name"));
@@ -61,4 +71,6 @@ public class UserDaoV1 {
 
         return user;
     }
+
+
 }

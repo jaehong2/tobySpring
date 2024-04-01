@@ -1,10 +1,21 @@
-package springbook.user.domain;
-import java.sql.*;
+package ch01.ch01_3;
 
-public abstract class UserDaoV4 {
+import ch01.ch01_2.User;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class UserDaoV6 {
+    private ConnectionMaker connectionMaker;
+
+    public UserDaoV6(ConnectionMaker connectionMaker) {
+        this.connectionMaker = connectionMaker;
+    }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) values (?,?,?)"
@@ -17,13 +28,10 @@ public abstract class UserDaoV4 {
 
         ps.close();
         c.close();
-
-
-        System.out.println("");
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?"
@@ -46,5 +54,4 @@ public abstract class UserDaoV4 {
     }
 
 
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }
